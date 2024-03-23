@@ -1,28 +1,22 @@
 import { useRef, useState } from "react";
 import Button from "./Button";
 
-export default function AddItemForm({ setItems }) {
+export default function AddItemForm({ onAddItem }) {
   const [itemText, setItemText] = useState("");
   const inputRef = useRef();
-  return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
 
-        if (!itemText) {
-          alert("Item cant be empty");
-          inputRef.current.focus();
-          return;
-        }
-        const newItem = {
-          id: new Date().getTime(),
-          name: itemText,
-          packed: false,
-        };
-        setItems((prevItems) => [...prevItems, newItem]);
-        setItemText("");
-      }}
-    >
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!itemText) {
+      alert("Item cant be empty");
+      inputRef.current.focus();
+      return;
+    }
+    onAddItem(newItem);
+    setItemText("");
+  };
+  return (
+    <form onSubmit={handleSubmit}>
       <h2>Add an item</h2>
       <input
         ref={inputRef}
@@ -31,7 +25,7 @@ export default function AddItemForm({ setItems }) {
         onChange={(e) => {
           setItemText(e.target.value);
         }}
-        autoFocus="true"
+        autoFocus={true}
       />
       <Button>Add to list</Button>
     </form>
