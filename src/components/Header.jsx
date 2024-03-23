@@ -1,3 +1,11 @@
+import Counter from "./Counter";
+import Logo from "./Logo";
+
 export default function Header() {
-  return <header>Header</header>;
+  return (
+    <header>
+      <Logo></Logo>
+      <Counter></Counter>
+    </header>
+  );
 }
