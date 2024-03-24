@@ -41,12 +41,36 @@ function App() {
 
     setItems(newItems);
   };
+
+  const handleDeleteItem = (id) => {
+    const newItems = items.filter((item) => item.id !== id);
+    setItems(newItems);
+  };
+
+  const handleToggleItem = (id) => {
+    const newItems = items.map((item) => {
+      if (item.id === id) {
+        return { ...item, packed: !item.packed };
+      }
+      return item;
+    });
+    setItems(newItems);
+  };
   return (
     <>
       <BackgroundHeading></BackgroundHeading>
       <main>
-        <Header></Header>
-        <ItemList items={items}></ItemList>
+        <Header
+          numberOfItemsPacked={
+            items.filter((item) => item.packed === true).length
+          }
+          totalNumberOfItems={items.length}
+        ></Header>
+        <ItemList
+          handleDeleteItem={handleDeleteItem}
+          handleToggleItem={handleToggleItem}
+          items={items}
+        ></ItemList>
         <Sidebar
           handleRemoveAllItems={handleRemoveAllItems}
           handleAddItem={handleAddItem}

@@ -12,7 +12,7 @@ export default function AddItemForm({ onAddItem }) {
       inputRef.current.focus();
       return;
     }
-    onAddItem(newItem);
+    onAddItem(itemText);
     setItemText("");
   };
   return (
