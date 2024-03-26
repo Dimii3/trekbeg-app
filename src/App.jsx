@@ -3,11 +3,17 @@ import Footer from "./components/Footer";
 import Header from "./components/Header";
 import ItemList from "./components/ItemList";
 import Sidebar from "./components/Sidebar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { initalItems } from "./lib/constants";
+import Logo from "./components/Logo";
+import Counter from "./components/Counter";
+import AddItemForm from "./components/AddItemForm";
+import ButtonGroup from "./components/ButtonGroup";
 
 function App() {
-  const [items, setItems] = useState(initalItems);
+  const [items, setItems] = useState(() => {
+    return JSON.parse(localStorage.getItem("items")) || initalItems;
+  });
 
   const handleAddItem = (newItemText) => {
     const newItem = {
@@ -56,16 +62,23 @@ function App() {
     });
     setItems(newItems);
   };
+
+  useEffect(() => {
+    localStorage.setItem("items", JSON.stringify(items));
+  }, [items]);
   return (
     <>
       <BackgroundHeading></BackgroundHeading>
       <main>
-        <Header
-          numberOfItemsPacked={
-            items.filter((item) => item.packed === true).length
-          }
-          totalNumberOfItems={items.length}
-        ></Header>
+        <Header>
+          <Logo></Logo>
+          <Counter
+            numberOfItemsPacked={
+              items.filter((item) => item.packed === true).length
+            }
+            totalNumberOfItems={items.length}
+          ></Counter>
+        </Header>
         <ItemList
           handleDeleteItem={handleDeleteItem}
           handleToggleItem={handleToggleItem}
@@ -77,7 +90,15 @@ function App() {
           handleMarkAllAsIncomplete={handleMarkAllAsIncomplete}
           handleResetToInitial={handleResetToInitial}
           handleMarkAllAsComplete={handleMarkAllAsComplete}
-        ></Sidebar>
+        >
+          <AddItemForm onAddItem={handleAddItem}></AddItemForm>
+          <ButtonGroup
+            handleMarkAllAsIncomplete={handleMarkAllAsIncomplete}
+            handleMarkAllAsComplete={handleMarkAllAsComplete}
+            handleRemoveAllItems={handleRemoveAllItems}
+            handleResetToInitial={handleResetToInitial}
+          ></ButtonGroup>
+        </Sidebar>
       </main>
 
       <Footer></Footer>
