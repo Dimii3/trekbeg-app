@@ -1,13 +1,12 @@
-import { useContext } from "react";
 import AddItemForm from "./AddItemForm";
 import ButtonGroup from "./ButtonGroup";
-import { ItemsContext } from "../contexts/ItemsContextProvider";
+import { useItemsStore } from "../stores/itemsStore";
 
 export default function Sidebar() {
-  const { handleAddItem } = useContext(ItemsContext);
+  const addItem = useItemsStore((state) => state.addItem);
   return (
     <div className="sidebar">
-      <AddItemForm onAddItem={handleAddItem}></AddItemForm>
+      <AddItemForm onAddItem={addItem}></AddItemForm>
       <ButtonGroup></ButtonGroup>
     </div>
   );
